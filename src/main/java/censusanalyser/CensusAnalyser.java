@@ -15,9 +15,7 @@ public class CensusAnalyser {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));)
         {
             Iterator<CSVStates> censusCSVIterator = getCSVFileIterable(reader,IndiaCensusCSV.class);
-            Iterable<CSVStates> csvIterable=()->censusCSVIterator;
-            int numOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(),false).count();
-            return numOfEnteries;
+            return getCount(censusCSVIterator);
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
@@ -28,13 +26,17 @@ public class CensusAnalyser {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));)
         {
             Iterator<CSVStates> censusCSVIterator = getCSVFileIterable(reader, CSVStates.class);
-            Iterable<CSVStates> csvIterable=()->censusCSVIterator;
-            int numOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(),false).count();
-            return numOfEnteries;
+            return getCount(censusCSVIterator);
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
         }
+    }
+
+    private <E> int getCount(Iterator<E> iterator){
+        Iterable<E> csvIterable=()->iterator;
+        int numOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(),false).count();
+        return numOfEnteries;
     }
 
     private <E> Iterator<E> getCSVFileIterable(Reader reader,Class CSVClass) throws CensusAnalyserException {
