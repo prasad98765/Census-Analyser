@@ -1,7 +1,8 @@
 package censusanalyser;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
+import CSvBuilderPackage.CSVBuilderException;
+import CSvBuilderPackage.CSVBuilderFactory;
+import CSvBuilderPackage.ICSVBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -44,5 +45,7 @@ public class CensusAnalyser {
         int numOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(),false).count();
         return numOfEnteries;
     }
+
+
 
 }
