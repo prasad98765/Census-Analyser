@@ -4,11 +4,12 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class OpenCSVBuilder<E> implements ICSVBuilder{
 
-    public Iterator<E> getCSVFileIterable(Reader reader, Class CSVClass) throws CensusAnalyserException {
+    public Iterator<E> getCSVFileIterable(Reader reader, Class CSVClass) throws CSVBuilderException {
         try {
             CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(CSVClass);
@@ -17,11 +18,11 @@ public class OpenCSVBuilder<E> implements ICSVBuilder{
             return csvToBean.iterator();
 
         } catch (IllegalStateException e) {
-            throw new CensusAnalyserException(e.getMessage(),
-                    CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
+            throw new CSVBuilderException(e.getMessage(),
+                    CSVBuilderException.ExceptionType.UNABLE_TO_PARSE);
         }   catch (RuntimeException r) {
-            throw new CensusAnalyserException(r.getMessage(),
-                    CensusAnalyserException.ExceptionType.INCORRECT_FILE_DATA);
+            throw new CSVBuilderException(r.getMessage(),
+                    CSVBuilderException.ExceptionType.INCORRECT_FILE_DATA);
         }
     }
 }
