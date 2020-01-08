@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+import java.util.List;
+
 public class CensusAnalyserTest {
 
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
@@ -18,7 +21,9 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             int numOfRecords = censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
             Assert.assertEquals(29,numOfRecords);
-        } catch (CensusAnalyserException e) { }
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -45,7 +50,7 @@ public class CensusAnalyserTest {
         }
     }
 
-    @Test
+        @Test
     public void givenIndiaCensusData_WithWrongDelimiter_ShouldCustomException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
@@ -117,6 +122,44 @@ public class CensusAnalyserTest {
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE_DATA, e.type);
         }
+    }
+
+    @Test
+    public void givenIndianCensusCsv_WithSorting_ShouldReturnElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(4).toString().contains("Chattisgarh"));
+    }
+
+    @Test
+    public void givenIndianCensusCsv_WithSorting_ShouldReturn1stElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(0).toString().contains("Andhra Pradesh"));
+    }
+    @Test
+    public void givenIndianCensusCsv_WithSorting_ShouldReturn2ndElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(28).toString().contains("West Bengal"));
+    }
+    @Test
+    public void givenIndianStatesCsv_WithSorting_ShouldReturnElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(0).toString().contains("Andaman and Nicobar Islands"));
+    }
+    @Test
+    public void givenIndianStatesCsv_WithSorting_ShouldReturn1stElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(0).toString().contains("Andaman and Nicobar Islands"));
+    }
+    @Test
+    public void givenIndianStatesCsv_WithSorting_ShouldReturn2ndElement() {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        List list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        Assert.assertEquals(true,list.get(36).toString().contains("West Bengal"));
     }
 
 }

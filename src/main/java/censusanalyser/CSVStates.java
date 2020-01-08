@@ -18,7 +18,8 @@ public class CSVStates {
 
     @Override
     public String toString() {
-        return "CSVStates{" +
+        System.out.println(StateName);
+        return "{" +
                 "SrNo='" + SrNo + '\'' +
                 ", StateName='" + StateName + '\'' +
                 ", TIN='" + TIN + '\'' +

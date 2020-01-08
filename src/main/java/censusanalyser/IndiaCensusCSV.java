@@ -18,7 +18,7 @@ public class IndiaCensusCSV {
 
     @Override
     public String toString() {
-        return "CSVStates{" +
+        return "{" +
                 "State='" + state + '\'' +
                 ", Population='" + population + '\'' +
                 ", AreaInSqKm='" + areaInSqKm + '\'' +
