@@ -1,8 +1,13 @@
 package censusanalyser;
 
+
+
+
 import CSvBuilderPackage.CSVBuilderException;
 import CSvBuilderPackage.CSVBuilderFactory;
 import CSvBuilderPackage.ICSVBuilder;
+import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -44,7 +49,7 @@ public class CensusAnalyser {
     }
 
 
-    public List sortingloadIndiaCensusData(String csvFilePath) {
+    public JSONArray sortingloadIndiaCensusData(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<IndiaCensusCSV> censusCSVIterator = icsvBuilder.getCSVFileIterable(reader, IndiaCensusCSV.class);
@@ -53,10 +58,12 @@ public class CensusAnalyser {
                 arraylist.add(censusCSVIterator.next());
             }
             Collections.sort(arraylist, new ComparatorData());
-            for (int i = 0; i < arraylist.size(); i++) {
-               System.out.println(arraylist.get(i));
+            JSONArray jsonArray = new JSONArray();
+            for (int i=0; i<arraylist.size(); i++){
+                jsonArray.put(arraylist.get(i));
             }
-            return arraylist;
+            System.out.println(jsonArray);
+            return jsonArray;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CSVBuilderException e) {
@@ -65,7 +72,7 @@ public class CensusAnalyser {
         return null;
     }
 
-        public List sortingloadIndianStateCode(String csvFilePath) {
+        public JSONArray sortingloadIndianStateCode(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<CSVStates> censusCSVIterator = icsvBuilder.getCSVFileIterable(reader, CSVStates.class);
@@ -73,11 +80,13 @@ public class CensusAnalyser {
             while (censusCSVIterator.hasNext()) {
                 arraylist.add(censusCSVIterator.next());
             }
-            Collections.sort(arraylist.subList(2,2),new ComparatorData());
-            for (int i=0; i<arraylist.size();i++){
-                System.out.println(arraylist.get(i));
+            Collections.sort(arraylist.subList(6,7),new ComparatorData());
+            JSONArray jsonArray = new JSONArray();
+            for (int i=0; i<arraylist.size(); i++){
+                jsonArray.put(arraylist.get(i));
             }
-            return arraylist;
+            System.out.println(jsonArray);
+            return jsonArray;
         } catch (Exception e) {
             e.printStackTrace();
         }

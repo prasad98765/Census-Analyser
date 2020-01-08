@@ -20,10 +20,10 @@ public class CSVStates {
     public String toString() {
         System.out.println(StateName);
         return "{" +
-                "SrNo='" + SrNo + '\'' +
-                ", StateName='" + StateName + '\'' +
-                ", TIN='" + TIN + '\'' +
-                ", StateCodes='" + StateCode + '\'' +
+                "SrNo:'" + SrNo + '\'' +
+                ", StateName:'" + StateName + '\'' +
+                ", TIN:'" + TIN + '\'' +
+                ", StateCodes:'" + StateCode + '\'' +
                 '}';
     }
 }
