@@ -129,38 +129,38 @@ public class CensusAnalyserTest {
     @Test
     public void givenIndianCensusCsv_WithSorting_ShouldReturnElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(0).toString().contains("Andhra Pradesh"));
     }
 
     @Test
     public void givenIndianCensusCsv_WithSorting_ShouldReturn1stElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(0).toString().contains("Andhra Pradesh"));
     }
     @Test
     public void givenIndianCensusCsv_WithSorting_ShouldReturnlastElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(28).toString().contains("West Bengal"));
     }
     @Test
     public void givenIndianStatesCsv_WithSorting_ShouldReturnElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(0).toString().contains("Andaman and Nicobar Islands"));
     }
     @Test
     public void givenIndianStatesCsv_WithSorting_ShouldReturn1stElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(0).toString().contains("Andaman and Nicobar Islands"));
     }
     @Test
     public void givenIndianStatesCsv_WithSorting_ShouldReturnlastElement() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        JSONArray list = censusAnalyser.sortingloadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        JSONArray list = censusAnalyser.sortingIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
         Assert.assertEquals(true,list.get(36).toString().contains("West Bengal"));
     }
 

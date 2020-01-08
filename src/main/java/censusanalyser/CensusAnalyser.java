@@ -49,7 +49,7 @@ public class CensusAnalyser {
     }
 
 
-    public JSONArray sortingloadIndiaCensusData(String csvFilePath) {
+    public JSONArray sortingIndiaCensusData(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<IndiaCensusCSV> censusCSVIterator = icsvBuilder.getCSVFileIterable(reader, IndiaCensusCSV.class);
@@ -57,7 +57,8 @@ public class CensusAnalyser {
             while (censusCSVIterator.hasNext()) {
                 arraylist.add(censusCSVIterator.next());
             }
-            Collections.sort(arraylist, new ComparatorData());
+            Comparator<IndiaCensusCSV> codeCSVComparator = (o1,o2)-> ((o1.toString().compareTo(o2.toString()))<0)?-1:1;
+            Collections.sort(arraylist, codeCSVComparator);
             JSONArray jsonArray = new JSONArray();
             for (int i=0; i<arraylist.size(); i++){
                 jsonArray.put(arraylist.get(i));
@@ -72,7 +73,7 @@ public class CensusAnalyser {
         return null;
     }
 
-        public JSONArray sortingloadIndianStateCode(String csvFilePath) {
+        public JSONArray sortingIndianStateCode(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<CSVStates> censusCSVIterator = icsvBuilder.getCSVFileIterable(reader, CSVStates.class);
@@ -80,7 +81,8 @@ public class CensusAnalyser {
             while (censusCSVIterator.hasNext()) {
                 arraylist.add(censusCSVIterator.next());
             }
-            Collections.sort(arraylist.subList(6,7),new ComparatorData());
+            Comparator<CSVStates> codeCSVComparator = (o1,o2)-> ((o1.StateName.compareTo(o2.StateName))<0)?-1:1;
+            Collections.sort(arraylist,codeCSVComparator);
             JSONArray jsonArray = new JSONArray();
             for (int i=0; i<arraylist.size(); i++){
                 jsonArray.put(arraylist.get(i));
@@ -92,6 +94,7 @@ public class CensusAnalyser {
         }
         return null;
     }
+
 }
 
 
