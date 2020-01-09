@@ -11,10 +11,12 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class CensusAnalyser {
+    List<IndiaCensusCSV> censusCSVList = null;
+    List<CSVStates> censusStateCode = null;
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            List<IndiaCensusCSV> censusCSVList = icsvBuilder.getCSVFileInList(reader,IndiaCensusCSV.class);
+             censusCSVList = icsvBuilder.getCSVFileInList(reader,IndiaCensusCSV.class);
             return censusCSVList.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
@@ -27,8 +29,8 @@ public class CensusAnalyser {
     public int loadIndianStateCode(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            List<CSVStates> censusCSVList = icsvBuilder.getCSVFileInList(reader, CSVStates.class);
-            return censusCSVList.size();
+            censusStateCode = icsvBuilder.getCSVFileInList(reader, CSVStates.class);
+            return censusStateCode.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
@@ -37,38 +39,27 @@ public class CensusAnalyser {
         }
     }
 
-    public String sortingIndiaCensusData(String csvFilePath) {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            List<IndiaCensusCSV> arraylist = icsvBuilder.getCSVFileInList(reader, IndiaCensusCSV.class);
-            Comparator<IndiaCensusCSV> codeCSVComparator = (o1, o2) -> ((o1.toString().compareTo(o2.toString())) < 0) ? -1 : 1;
-            Collections.sort(arraylist, codeCSVComparator);
-            String json = new Gson().toJson(arraylist);
-            System.out.println(json);
-            return json;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CSVBuilderException e) {
-            e.printStackTrace();
+    public String sortingIndiaCensusData() throws CensusAnalyserException {
+        if ((censusCSVList == null) || (censusCSVList.size() == 0)) {
+            throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
         }
-        return null;
+        Comparator<IndiaCensusCSV> codeCSVComparator = (o1, o2) -> ((o1.toString().compareTo(o2.toString())) < 0) ? -1 : ((o1.toString().compareTo(o2.toString())) > 0) ? 1 : 0;
+        Collections.sort(censusCSVList, codeCSVComparator);
+        String json = new Gson().toJson(censusCSVList);
+        System.out.println(json);
+        return json;
     }
 
-    public String sortingIndianStateCode(String csvFilePath) {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            List<CSVStates> arraylist = icsvBuilder.getCSVFileInList(reader, CSVStates.class);
+    public String sortingIndianStateCode() throws CensusAnalyserException {
+            if ((censusStateCode == null) || (censusStateCode.size() == 0)) {
+                throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
+            }
             Comparator<CSVStates> codeCSVComparator = (o1, o2) -> ((o1.StateCode.compareTo(o2.StateCode)) < 0) ? -1 : ((o1.StateCode.compareTo(o2.StateCode)) > 0) ? 1 : 0;
-            Collections.sort(arraylist, codeCSVComparator);
-            String json = new Gson().toJson(arraylist);
+            Collections.sort(censusStateCode, codeCSVComparator);
+            String json = new Gson().toJson(censusStateCode);
             System.out.println(json);
             return json;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
-    }
-
 }
 
 

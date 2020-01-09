@@ -12,7 +12,7 @@ public class CensusAnalyserTest {
     private static final String WRONG_CSV_FILE_TYPE = "./src/main/resources/IndiaStateCensusData.txt";
     private static final String WRONG_CSV_FILE_DATA = "/home/admin1/Downloads/CensusAnalyser/src/test/resources/WrongData.csv";
     private static final String INDIA_STATE_CSV_FILE_PATH = "./src/test/resources/IndiaStateCode.csv";
-
+    private static final String Null_DATA_CSV_PATH="/home/admin1/Downloads/CensusAnalyser/src/test/resources/NullData.csv";
     @Test
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
         try {
@@ -133,31 +133,48 @@ public class CensusAnalyserTest {
         }
     }
     @Test
-    public void givenIndianCensusCsv_WithSorting_ShouldReturn1stElement() {
+    public void givenIndianCensusCsv_WithSorting_ShouldReturn1stElement() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        String list = censusAnalyser.sortingIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        String list = censusAnalyser.sortingIndiaCensusData();
         IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list,IndiaCensusCSV[].class);
         Assert.assertEquals(true,indiaCensusCSVS[0].state.contains("Andhra Pradesh"));
     }
     @Test
-    public void givenIndianCensusCsv_WithSorting_ShouldReturnLastElement() {
+    public void givenIndianCensusCsv_WithSorting_ShouldReturnLastElement() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        String list = censusAnalyser.sortingIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        String list = censusAnalyser.sortingIndiaCensusData();
         IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list,IndiaCensusCSV[].class);
         Assert.assertEquals(true,indiaCensusCSVS[28].state.contains("West Bengal"));
     }
     @Test
-    public void givenIndianStatesCsv_WithSorting_ShouldReturn1stElement() {
+    public void givenIndianStatesCsv_WithSorting_ShouldReturn1stElement() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        String list = censusAnalyser.sortingIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
-        CSVStates[] indiaCensusCSVS = new Gson().fromJson(list,CSVStates[].class);
-        Assert.assertEquals("Andhra Pradesh New",indiaCensusCSVS[0].StateName);
+        censusAnalyser.loadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        String list = censusAnalyser.sortingIndianStateCode();
+        CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+        Assert.assertEquals("Andhra Pradesh New",indiaStateData[0].StateName);
     }
     @Test
-    public void givenIndianStatesCsv_WithSorting_ShouldReturnLastElement() {
+    public void givenIndianStatesCsv_WithSorting_ShouldReturnLastElement() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        String list = censusAnalyser.sortingIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
-        CSVStates[] indiaCensusCSVS = new Gson().fromJson(list,CSVStates[].class);
-        Assert.assertEquals(true,indiaCensusCSVS[36].StateName.contains("West Bengal"));
+        censusAnalyser.loadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
+        String list = censusAnalyser.sortingIndianStateCode();
+        CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+        Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
+    }
+
+    @Test
+    public void givenIndianStatesCsv_ShouldReturnNull() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndianStateCode(Null_DATA_CSV_PATH);
+            String list = censusAnalyser.sortingIndianStateCode();
+            CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+            Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
     }
 }
