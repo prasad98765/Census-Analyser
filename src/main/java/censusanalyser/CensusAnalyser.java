@@ -1,15 +1,12 @@
 package censusanalyser;
 
-
-
-
 import CSvBuilderPackage.CSVBuilderException;
 import CSvBuilderPackage.CSVBuilderFactory;
 import CSvBuilderPackage.ICSVBuilder;
-import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -81,7 +78,7 @@ public class CensusAnalyser {
             while (censusCSVIterator.hasNext()) {
                 arraylist.add(censusCSVIterator.next());
             }
-            Comparator<CSVStates> codeCSVComparator = (o1,o2)-> ((o1.StateName.compareTo(o2.StateName))<0)?-1:1;
+            Comparator<CSVStates> codeCSVComparator = (o1,o2)-> ((o1.StateCode.compareTo(o2.StateCode))<0)?-1:1;
             Collections.sort(arraylist,codeCSVComparator);
             JSONArray jsonArray = new JSONArray();
             for (int i=0; i<arraylist.size(); i++){
