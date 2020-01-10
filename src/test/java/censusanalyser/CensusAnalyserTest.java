@@ -113,7 +113,6 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
-                Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_FILE_DATA_FROMANT, e.type);
         }
     }
 
@@ -181,6 +180,28 @@ public class CensusAnalyserTest {
             IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
             Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
         } catch (CensusAnalyserException e) {
+        }
+    }
+
+    @Test
+    public void givenIndianStateCensus_ReturnSortedInLargestPopulationState() throws CensusAnalyserException {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+        String list = censusAnalyser.sortingIndiaCensusByPopulation();
+        IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list,IndiaCensusCSV[].class);
+        Assert.assertEquals(true,indiaCensusCSVS[0].state.contains("Uttar Pradesh"));
+    }
+
+    @Test
+    public void givenIndianStateCensus_ReturnSortedInLowestPopulationState() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+            String list = censusAnalyser.sortingIndiaCensusByPopulation();
+            IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
+            Assert.assertEquals(true, indiaCensusCSVS[28].state.contains("Sikkim"));
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
         }
     }
 }
