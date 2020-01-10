@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+//import static censusanalyser.CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM;
+
 public class CensusAnalyserTest {
 
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
@@ -45,7 +47,6 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_TYPE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
-        } catch (RuntimeException r) {
         }
     }
 
@@ -57,8 +58,7 @@ public class CensusAnalyserTest {
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
-        } catch (RuntimeException r){
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_FILE_DATA_FROMANT, e.type);
         }
 
     }
@@ -111,10 +111,9 @@ public class CensusAnalyserTest {
     public void givenIndiaStateData_WithWrongDelimiter_ShouldCustomException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadIndianStateCode(WRONG_CSV_FILE_DATA);
+            censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
-        }   catch (RuntimeException r){
+                Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_FILE_DATA_FROMANT, e.type);
         }
     }
 
@@ -124,7 +123,7 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE_DATA, e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_FILE_DATA_FROMANT, e.type);
         } catch (RuntimeException r){
         }
     }
@@ -149,7 +148,7 @@ public class CensusAnalyserTest {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
         censusAnalyser.loadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
         String list = censusAnalyser.sortingIndianStateCode();
-        CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+        IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
         Assert.assertEquals("Andhra Pradesh New",indiaStateData[0].StateName);
     }
     @Test
@@ -157,7 +156,7 @@ public class CensusAnalyserTest {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
         censusAnalyser.loadIndianStateCode(INDIA_STATE_CSV_FILE_PATH);
         String list = censusAnalyser.sortingIndianStateCode();
-        CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+        IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
         Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
     }
 
@@ -167,7 +166,19 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndianStateCode(Null_DATA_CSV_PATH);
             String list = censusAnalyser.sortingIndianStateCode();
-            CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
+            IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
+            Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
+        } catch (CensusAnalyserException e) {
+        }
+    }
+
+    @Test
+    public void givenIndianStateCodeCsv_ShouldReturnNullException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusData(Null_DATA_CSV_PATH);
+            String list = censusAnalyser.sortingIndianStateCode();
+            IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
             Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
         } catch (CensusAnalyserException e) {
         }
