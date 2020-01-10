@@ -11,13 +11,21 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class CensusAnalyser {
-    List<IndiaCensusCSV> censusCSVList = null;
+    List<IndiaCensusDAO> censusList = null;
     List<CSVStates> censusStateCode = null;
+
+    public CensusAnalyser() {
+        this.censusList = new ArrayList<IndiaCensusDAO>();
+    }
+
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-             censusCSVList = icsvBuilder.getCSVFileInList(reader,IndiaCensusCSV.class);
-            return censusCSVList.size();
+            List<IndiaCensusCSV> censusCSVList=icsvBuilder.getCSVFileInList(reader,IndiaCensusCSV.class);
+            for (int i=0; i < censusCSVList.size(); i++){
+                this.censusList.add(new IndiaCensusDAO(censusCSVList.get(i)));
+            }
+            return censusList.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
@@ -40,12 +48,12 @@ public class CensusAnalyser {
     }
 
     public String sortingIndiaCensusData() throws CensusAnalyserException {
-        if ((censusCSVList == null) || (censusCSVList.size() == 0)) {
+        if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
         }
-        Comparator<IndiaCensusCSV> codeCSVComparator = (o1, o2) -> ((o1.toString().compareTo(o2.toString())) < 0) ? -1 : ((o1.toString().compareTo(o2.toString())) > 0) ? 1 : 0;
-        Collections.sort(censusCSVList, codeCSVComparator);
-        String json = new Gson().toJson(censusCSVList);
+        Comparator<IndiaCensusDAO> codeCSVComparator = (o1, o2) -> ((o1.state.compareTo(o2.state)) < 0) ? -1 : ((o1.state.compareTo(o2.state)) > 0) ? 1 : 0;
+        Collections.sort(censusList, codeCSVComparator);
+        String json = new Gson().toJson(censusList);
         System.out.println(json);
         return json;
     }

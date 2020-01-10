@@ -46,7 +46,6 @@ public class CensusAnalyserTest {
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
         } catch (RuntimeException r) {
-            r.printStackTrace();
         }
     }
 
@@ -59,8 +58,7 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
-        } catch (RuntimeException r) {
-            r.printStackTrace();
+        } catch (RuntimeException r){
         }
 
     }
@@ -115,9 +113,8 @@ public class CensusAnalyserTest {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndianStateCode(WRONG_CSV_FILE_DATA);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE_DATA, e.type);
-        } catch (RuntimeException r){
-            r.printStackTrace();
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+        }   catch (RuntimeException r){
         }
     }
 
@@ -129,7 +126,6 @@ public class CensusAnalyserTest {
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE_DATA, e.type);
         } catch (RuntimeException r){
-            r.printStackTrace();
         }
     }
     @Test
@@ -166,7 +162,7 @@ public class CensusAnalyserTest {
     }
 
     @Test
-    public void givenIndianStatesCsv_ShouldReturnNull() {
+    public void givenIndianStatesCsv_ShouldReturnNullException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndianStateCode(Null_DATA_CSV_PATH);
@@ -174,7 +170,6 @@ public class CensusAnalyserTest {
             CSVStates[] indiaStateData = new Gson().fromJson(list,CSVStates[].class);
             Assert.assertEquals(true,indiaStateData[36].StateName.contains("West Bengal"));
         } catch (CensusAnalyserException e) {
-            e.printStackTrace();
         }
     }
 }
