@@ -78,7 +78,7 @@ public class CensusAnalyser {
 
     public String sortingIndiaCensusByPopulation() throws CensusAnalyserException {
         if ((censusList == null) || (censusList.size() == 0)) {
-            throw new CensusAnalyserException("Invalid Data", CensusAnalyserException.ExceptionType.INVALID_DATA);
+            throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
         Comparator<IndiaCensusDAO> codeCSVComparator = (o1, o2) -> ((o1.Population - (o2.Population)) > 0) ? -1 :1;
         Collections.sort(censusList, codeCSVComparator);
@@ -87,9 +87,9 @@ public class CensusAnalyser {
         return json;
     }
 
-    public String sortingIndiaCensusByPopulationDensity() throws CensusAnalyserException {
+    public String sortingIndiaCensusByDensity() throws CensusAnalyserException {
         if ((censusList == null) || (censusList.size() == 0)) {
-            throw new CensusAnalyserException("Invalid Data", CensusAnalyserException.ExceptionType.INVALID_DATA);
+            throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
         Comparator<IndiaCensusDAO> codeCSVComparator = (o1, o2) -> ((o1.densityPerSqKm - (o2.densityPerSqKm)) > 0) ? -1 :1;
         Collections.sort(censusList, codeCSVComparator);
@@ -98,9 +98,9 @@ public class CensusAnalyser {
         return json;
     }
 
-    public String sortingIndiaCensusByPopulationAreaWise() throws CensusAnalyserException {
+    public String sortingIndiaCensusByAreaWise() throws CensusAnalyserException {
         if ((censusList == null) || (censusList.size() == 0)) {
-            throw new CensusAnalyserException("Invalid Data", CensusAnalyserException.ExceptionType.INVALID_DATA);
+            throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
         Comparator<IndiaCensusDAO> codeCSVComparator = (o1, o2) -> ((o1.areaInSqKm - (o2.areaInSqKm)) > 0) ? -1 :1;
         Collections.sort(censusList, codeCSVComparator);
