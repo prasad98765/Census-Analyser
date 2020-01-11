@@ -4,11 +4,16 @@ import CSvBuilderPackage.CSVBuilderException;
 import CSvBuilderPackage.CSVBuilderFactory;
 import CSvBuilderPackage.ICSVBuilder;
 import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CensusAnalyser {
     List<IndiaCensusDAO> censusList = null;
@@ -41,10 +46,9 @@ public class CensusAnalyser {
     public int loadIndianStateCode(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
-            List<IndiaStateCode> StateDataList = icsvBuilder.getCSVFileInList(reader, IndiaStateCode.class);
-            for (int i=0; i < StateDataList.size(); i++){
-                this.StateCodeList.add(new IndiaStateCodeDAO(StateDataList.get(i)));
-            }
+            List<IndiaStateCode> stateDataList = icsvBuilder.getCSVFileInList(reader, IndiaStateCode.class);
+            stateDataList.stream().filter(stateData ->
+                    StateCodeList.add(new IndiaStateCodeDAO(stateData))).collect(Collectors.toList());
             return StateCodeList.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
@@ -69,8 +73,8 @@ public class CensusAnalyser {
             if ((StateCodeList == null) || (StateCodeList.size() == 0)) {
                 throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
             }
-            Comparator<IndiaStateCodeDAO> codeCSVComparator = (o1, o2) -> ((o1.StateCode.compareTo(o2.StateCode)) < 0) ? -1 : ((o1.StateCode.compareTo(o2.StateCode)) > 0) ? 1 : 0;
-            Collections.sort(StateCodeList, codeCSVComparator);
+        Comparator<IndiaStateCodeDAO> codeCSVComparator = (o1, o2) -> ((o1.StateCode.compareTo(o2.StateCode)) < 0) ? -1 : ((o1.StateCode.compareTo(o2.StateCode)) > 0) ? 1 : 0;
+        Collections.sort(StateCodeList, codeCSVComparator);
             String json = new Gson().toJson(StateCodeList);
             System.out.println(json);
             return json;
@@ -108,6 +112,7 @@ public class CensusAnalyser {
         System.out.println(json);
         return json;
     }
+
 
 }
 

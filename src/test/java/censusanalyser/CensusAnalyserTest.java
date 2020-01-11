@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-//import static censusanalyser.CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM;
-
 public class CensusAnalyserTest {
 
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
@@ -209,9 +207,9 @@ public class CensusAnalyserTest {
     public void givenIndianStateCensus_ReturnSortedInLargestDensityState() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
         censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
-        String list = censusAnalyser.sortingIndiaCensusByPopulation();
-        IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list,IndiaCensusCSV[].class);
-        Assert.assertEquals(true,indiaCensusCSVS[0].state.contains("Bihar"));
+        String list = censusAnalyser.sortingIndiaCensusByDensity();
+        IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
+        Assert.assertEquals(true, indiaCensusCSVS[0].state.contains("Bihar"));
     }
 
 
