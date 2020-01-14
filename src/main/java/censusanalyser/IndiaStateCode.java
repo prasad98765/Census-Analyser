@@ -8,7 +8,7 @@ public class IndiaStateCode {
     public int SrNo;
 
     @CsvBindByName(column = "StateName", required = true)
-    public String StateName;
+    public String state;
 
     @CsvBindByName(column = "TIN", required = true)
     public int TIN;
@@ -18,10 +18,9 @@ public class IndiaStateCode {
 
     @Override
     public String toString() {
-        System.out.println(StateName);
         return "{" +
                 "SrNo:'" + SrNo + '\'' +
-                ", StateName:'" + StateName + '\'' +
+                ", StateName:'" + state + '\'' +
                 ", TIN:'" + TIN + '\'' +
                 ", StateCodes:'" + StateCode + '\'' +
                 '}';
