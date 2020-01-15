@@ -18,7 +18,7 @@ public class CensusAnalyserTest {
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            int numOfRecords = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA, INDIA_CENSUS_CSV_FILE_PATH);
+            int numOfRecords = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA, INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
             Assert.assertEquals(29,numOfRecords);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class CensusAnalyserTest {
     public void givenIndianStatesCsv_ShouldReturnNullException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,Null_DATA_CSV_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,Null_DATA_CSV_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndianStateCode();
             IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
             Assert.assertEquals(true,indiaStateData[36].state.contains("West Bengal"));
@@ -163,7 +163,7 @@ public class CensusAnalyserTest {
     public void givenIndianStateCodeCsv_ShouldReturnNullException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,Null_DATA_CSV_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,Null_DATA_CSV_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndianStateCode();
             IndiaStateCode[] indiaStateData = new Gson().fromJson(list, IndiaStateCode[].class);
             Assert.assertEquals(true,indiaStateData[36].state.contains("West Bengal"));
@@ -174,7 +174,7 @@ public class CensusAnalyserTest {
     @Test
     public void givenIndianStateCensus_ReturnSortedInLargestPopulationState() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+        censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
         String list = censusAnalyser.sortingIndiaCensusByPopulation();
         IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list,IndiaCensusCSV[].class);
         Assert.assertEquals(true,indiaCensusCSVS[0].state.contains("Uttar Pradesh"));
@@ -184,7 +184,7 @@ public class CensusAnalyserTest {
     public void givenIndianStateCensus_ReturnSortedInLowestPopulationState() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndiaCensusByPopulation();
             IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
             Assert.assertEquals(true, indiaCensusCSVS[28].state.contains("Sikkim"));
@@ -196,7 +196,7 @@ public class CensusAnalyserTest {
     @Test
     public void givenIndianStateCensus_ReturnSortedInLargestDensityState() throws CensusAnalyserException {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
-        censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+        censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
         String list = censusAnalyser.sortingIndiaCensusByDensity();
         IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
         Assert.assertEquals(true, indiaCensusCSVS[0].state.contains("Bihar"));
@@ -207,7 +207,7 @@ public class CensusAnalyserTest {
     public void givenIndianStateCensus_ReturnSortedInLowestDensityState() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndiaCensusByDensity();
             IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
             Assert.assertEquals(true, indiaCensusCSVS[28].state.contains("Arunachal Pradesh"));
@@ -219,7 +219,7 @@ public class CensusAnalyserTest {
     public void givenIndianStateCensus_ReturnSortedInLargestAreaWise() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndiaCensusByAreaWise();
             IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
             Assert.assertEquals(true, indiaCensusCSVS[0].state.contains("Rajasthan"));
@@ -231,7 +231,7 @@ public class CensusAnalyserTest {
     public void givenIndianStateCensus_ReturnSortedInLowestAreaWise() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH,INDIA_STATE_CSV_FILE_PATH);
             String list = censusAnalyser.sortingIndiaCensusByAreaWise();
             IndiaCensusCSV[] indiaCensusCSVS = new Gson().fromJson(list, IndiaCensusCSV[].class);
             Assert.assertEquals(true, indiaCensusCSVS[28].state.contains("Goa"));

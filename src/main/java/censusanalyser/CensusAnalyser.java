@@ -8,30 +8,25 @@ import java.util.stream.Collectors;
 public class CensusAnalyser {
     Map<String,CensusDAO> censusList = new TreeMap<>();
 
-    public CensusAnalyser() {}
     public enum Country{
         INDIA,US
     }
 
-    public <E> int loadCensusData (Country country, String... csvFilePath) throws CensusAnalyserException {
-        if (country.equals(CensusAnalyser.Country.INDIA)) {
-            return this.loadIndiaCensusData(IndiaCensusCSV.class, csvFilePath);
-        } else if (country.equals(CensusAnalyser.Country.US)) {
-            return this.loadUSCensusData(USCensusCSV.class, csvFilePath[0]);
-        } else {
-            throw new CensusAnalyserException("INCORRECT_COUNTRY", CensusAnalyserException.ExceptionType.INCORRECT_COUNTRY);
-        }
+    public int loadCensusData (Country country, String... csvFilePath) throws CensusAnalyserException {
+        censusList = censusAdapterFactory.loadCensusData(country,csvFilePath);
+        return censusList.size();
     }
 
 
-    public int loadIndiaCensusData(Class  csvClass, String... csvFilePath) throws CensusAnalyserException {
-        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
-        return censusList.size();
-    }
-    public int loadUSCensusData(Class  csvClass,String csvFilePath) throws CensusAnalyserException {
-        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
-        return censusList.size();
-    }
+
+//    public int loadIndiaCensusData(Class  csvClass, String... csvFilePath) throws CensusAnalyserException {
+//        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
+//        return censusList.size();
+//    }
+//    public int loadUSCensusData(Class  csvClass,String csvFilePath) throws CensusAnalyserException {
+//        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
+//        return censusList.size();
+//    }
 
     public String sortingIndiaCensusData() throws CensusAnalyserException {
         if ((censusList == null) || (censusList.size() == 0)) {
