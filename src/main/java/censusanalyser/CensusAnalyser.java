@@ -18,16 +18,6 @@ public class CensusAnalyser {
     }
 
 
-
-//    public int loadIndiaCensusData(Class  csvClass, String... csvFilePath) throws CensusAnalyserException {
-//        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
-//        return censusList.size();
-//    }
-//    public int loadUSCensusData(Class  csvClass,String csvFilePath) throws CensusAnalyserException {
-//        censusList = new IndiaCensusAdapter().loadCensusData(csvClass , csvFilePath);
-//        return censusList.size();
-//    }
-
     public String sortingIndiaCensusData() throws CensusAnalyserException {
         if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
