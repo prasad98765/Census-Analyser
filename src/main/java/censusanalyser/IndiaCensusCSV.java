@@ -23,8 +23,8 @@ public class IndiaCensusCSV {
 
         this.state = state;
         this.population = population;
-        this.areaInSqKm =(int) areaInSqKm;
-        this.densityPerSqKm = (int)densityPerSqKm;
+        this.areaInSqKm = (int) areaInSqKm;
+        this.densityPerSqKm = (int) densityPerSqKm;
     }
 
 
