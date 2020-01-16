@@ -8,11 +8,18 @@ import java.util.stream.Collectors;
 public class CensusAnalyser {
     Map<String,CensusDAO> censusList = new TreeMap<>();
 
+    public Country country;
     public enum Country{
         INDIA,US
     }
+    public CensusAnalyser(Country country){
+        this.country = country;
+    }
+    public CensusAnalyser(){
 
-    public int loadCensusData (Country country, String... csvFilePath) throws CensusAnalyserException {
+    }
+
+    public int loadCensusData (String... csvFilePath) throws CensusAnalyserException {
         censusList = censusAdapterFactory.loadCensusData(country,csvFilePath);
         return censusList.size();
     }
@@ -22,9 +29,8 @@ public class CensusAnalyser {
         if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
         }
-        List<CensusDAO> censuslist = censusList.values().stream().collect(Collectors.toList());
-        Comparator<CensusDAO> codeCSVComparator = (o1, o2) -> ((o1.state.compareTo(o2.state)) < 0) ? -1 : ((o1.state.compareTo(o2.state)) > 0) ? 1 : 0;
-        Collections.sort(censuslist, codeCSVComparator);
+        List censuslist = censusList.values().stream().sorted(Comparator.comparing(censusData -> censusData.state))
+                .map(censusDAO -> censusDAO.getCensusDTO(country)).collect(Collectors.toList());
         String json = new Gson().toJson(censuslist);
         System.out.println(json);
         return json;
@@ -34,10 +40,9 @@ public class CensusAnalyser {
             if ((censusList == null) || (censusList.size() == 0)) {
                 throw new CensusAnalyserException("Invalid File", CensusAnalyserException.ExceptionType.NULL_EXCEPTION);
             }
-        List<CensusDAO> dataList = censusList.values().stream().collect(Collectors.toList());
-        Comparator<CensusDAO> codeCSVComparator = (o1, o2) -> ((o1.StateId.compareTo(o2.StateId)) < 0) ? -1 : ((o1.state.compareTo(o2.state)) > 0) ? 1 : 0;
-            Collections.sort(dataList, codeCSVComparator);
-            String json = new Gson().toJson(dataList);
+        List censuslist = censusList.values().stream().sorted(Comparator.comparing(censusData -> censusData.StateId))
+                .map(censusDAO -> censusDAO.getCensusDTO(country)).collect(Collectors.toList());
+            String json = new Gson().toJson(censuslist);
             System.out.println(json);
             return json;
         }
@@ -46,9 +51,9 @@ public class CensusAnalyser {
         if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
-        List<CensusDAO> censuslist = censusList.values().stream().collect(Collectors.toList());
-        Comparator<CensusDAO> codeCSVComparator = (o1, o2) -> ((o1.Population - (o2.Population)) > 0) ? -1 :1;
-        Collections.sort(censuslist, codeCSVComparator);
+                List censuslist = censusList.values().stream().sorted(Comparator.comparing(censusData -> censusData.Population))
+                .map(censusDAO -> censusDAO.getCensusDTO(country)).collect(Collectors.toList());
+            Collections.reverse(censuslist);
         String json = new Gson().toJson(censuslist);
         System.out.println(json);
         return json;
@@ -58,9 +63,9 @@ public class CensusAnalyser {
         if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
-        List<CensusDAO> censuslist = censusList.values().stream().collect(Collectors.toList());
-        Comparator<CensusDAO> codeCSVComparator = (o1, o2) -> ((o1.densityPerSqKm - (o2.densityPerSqKm)) > 0) ? -1 :1;
-        Collections.sort(censuslist, codeCSVComparator);
+        List censuslist = censusList.values().stream().sorted(Comparator.comparing(censusData -> censusData.densityPerSqKm))
+                .map(censusDAO -> censusDAO.getCensusDTO(country)).collect(Collectors.toList());
+        Collections.reverse(censuslist);
         String json = new Gson().toJson(censuslist);
         System.out.println(json);
         return json;
@@ -70,9 +75,9 @@ public class CensusAnalyser {
         if ((censusList == null) || (censusList.size() == 0)) {
             throw new CensusAnalyserException("Invalid data", CensusAnalyserException.ExceptionType.INVALID_DATA);
         }
-        List<CensusDAO> censuslist = censusList.values().stream().collect(Collectors.toList());
-        Comparator<CensusDAO> codeCSVComparator = (o1, o2) -> ((o1.areaInSqKm - (o2.areaInSqKm)) > 0) ? -1 :1;
-        Collections.sort(censuslist, codeCSVComparator);
+        List censuslist = censusList.values().stream().sorted(Comparator.comparing(censusData -> censusData.areaInSqKm))
+                .map(censusDAO -> censusDAO.getCensusDTO(country)).collect(Collectors.toList());
+        Collections.reverse(censuslist);
         String json = new Gson().toJson(censuslist);
         System.out.println(json);
         return json;
